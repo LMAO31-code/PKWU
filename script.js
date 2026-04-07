@@ -1,57 +1,56 @@
-// Use `const` for variables that don't change
-const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+function simpanDraft(){
 
-function addTransaction() {
-    // Use `const` for variables that don't change
-    const type = document.getElementById('transaction-type').value;
-    const name = document.getElementById('transaction-name').value.trim(); // Trim whitespace
-    const amount = parseFloat(document.getElementById('transaction-amount').value);
-    const date = new Date().toLocaleDateString();
+let judul = document.getElementById("judul").value
+let novel = document.getElementById("novel").value
 
-    // Validate input
-    if (name && !Number.isNaN(amount) && amount > 0) {
-        const transaction = { type, name, amount, date };
-        transactions.push(transaction);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        renderTransactions();
-    } else {
-        alert('Please enter valid transaction details.'); // Add error handling
-    }
+localStorage.setItem("judulNovel", judul)
+localStorage.setItem("draftNovel", novel)
+
+alert("Draft berhasil disimpan!")
 }
 
-function deleteTransaction(index) {
-    if (index >= 0 && index < transactions.length) { // Validate index
-        transactions.splice(index, 1);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        renderTransactions();
-    }
+function hapusDraft(){
+
+localStorage.removeItem("judulNovel")
+localStorage.removeItem("draftNovel")
+
+document.getElementById("judul").value=""
+document.getElementById("novel").value=""
+
+alert("Draft dihapus")
 }
 
-function renderTransactions() {
-    const expenseList = document.getElementById('expense-list');
-    expenseList.innerHTML = ''; // Clear the list
-    let total = 0;
+function buatProposal(){
 
-    transactions.forEach((transaction, index) => {
-        const entry = document.createElement('div');
-        entry.classList.add('expense-item');
-        entry.innerHTML = `
-            ${transaction.date} - ${transaction.type.toUpperCase()} - ${transaction.name}: Rp${transaction.amount.toFixed(2)}
-            <button class="delete-btn" onclick="deleteTransaction(${index})">Delete</button>
-        `;
-        expenseList.appendChild(entry);
+let topik = document.getElementById("topik").value
+let referensi = document.getElementById("referensi").value
 
-        // Update total balance
-        if (transaction.type === 'income') {
-            total += transaction.amount;
-        } else {
-            total -= transaction.amount;
-        }
-    });
+let hasil = `
+<h4>Judul Proposal</h4>
+<p>${topik}</p>
 
-    // Update total balance display
-    document.getElementById('total-balance').innerText = `Total Balance: Rp${total.toFixed(2)}`;
+<h4>Latar Belakang</h4>
+<p>Topik ini penting untuk diteliti karena memiliki dampak terhadap perkembangan ilmu pengetahuan.</p>
+
+<h4>Referensi</h4>
+<p>${referensi}</p>
+`
+
+document.getElementById("hasil").innerHTML = hasil
+
 }
 
-// Initial render
-renderTransactions();
+window.onload = function(){
+
+let judul = localStorage.getItem("judulNovel")
+let novel = localStorage.getItem("draftNovel")
+
+if(judul){
+document.getElementById("judul").value = judul
+}
+
+if(novel){
+document.getElementById("novel").value = novel
+}
+
+}
